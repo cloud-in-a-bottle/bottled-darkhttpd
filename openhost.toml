@@ -1,0 +1,48 @@
+[app]
+name = "darkhttpd"
+version = "0.1.0"
+description = "darkhttpd — tiny single-binary static-file HTTP server. Drop HTML/CSS/JS/images into $OPENHOST_APP_DATA_DIR/www on the host filesystem and they are served on https://darkhttpd.<zone>/. The site is publicly viewable (no SSO); the authoring path is SSH into the OpenHost host."
+
+[runtime.container]
+# darkhttpd binds 0.0.0.0:8080 inside the container; nothing
+# else lives in this image so we expose it directly.  No
+# auth-proxy sidecar because the whole point of this app is
+# to host a public-facing static site — the OpenHost router
+# delivers anonymous traffic when public_paths = ["/"] and
+# darkhttpd serves the files verbatim.
+image = "Dockerfile"
+port = 8080
+
+[routing]
+# Every path is public.  Anyone on the internet who knows
+# this app's URL can view the served files; the operator
+# controls visibility by choosing what to put in the
+# /www directory.  Flip to public_paths = [] to make this
+# an owner-only "private intranet" instead.
+public_paths = ["/"]
+# darkhttpd has no built-in health endpoint, so the OpenHost
+# router probes "/" — which returns the index.html (or 404 +
+# directory listing) once the container is up.  Either is
+# < 500, which is what wait_for_ready actually checks.
+health_check = "/"
+
+[resources]
+# darkhttpd's RSS at idle is ~2 MiB.  Allocate 64 MiB to leave
+# headroom for the kernel's file cache and any large file
+# transfers the operator might serve (darkhttpd sendfile()s,
+# so big files don't hit RAM, but the kernel still uses cache
+# pages).  This is the smallest of any OpenHost app I've
+# packaged.
+memory_mb = 64
+# Static file serving is IO-bound and cheap; 100m is generous.
+cpu_millicores = 100
+
+[data]
+# Persistent: $OPENHOST_APP_DATA_DIR/www holds the actual
+# website files.  An operator SSHes into the OpenHost host,
+# navigates to
+#   .openhost/local_compute_space/persistent_data/app_data/darkhttpd/www/
+# and drops index.html (and friends) there.  darkhttpd
+# picks the file up immediately on the next request — no
+# restart needed.
+app_data = true
