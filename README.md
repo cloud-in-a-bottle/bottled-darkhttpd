@@ -1,8 +1,8 @@
-# openhost-darkhttpd
+# bottled-darkhttpd
 
 [darkhttpd](https://unix4lyfe.org/darkhttpd/) — a tiny single-binary HTTP
 server for static files — packaged as the lightest possible "I have HTML,
-give me a URL" app on OpenHost.
+give me a URL" app on Cloud in a Bottle.
 
 ## What you get
 
@@ -62,7 +62,7 @@ $OPENHOST_APP_DATA_DIR/www/...
   is a public webserver. Don't put real secrets in `/www`.
 - The site IS public-by-default. To make it private (zone-owner only),
   edit `openhost.toml`, change `public_paths = ["/"]` to
-  `public_paths = []`, and redeploy. The OpenHost router will then 302
+  `public_paths = []`, and redeploy. The Cloud in a Bottle router will then 302
   anonymous visitors to `/login`.
 
 ## When to use this
@@ -75,8 +75,8 @@ $OPENHOST_APP_DATA_DIR/www/...
 ## When NOT to use this
 
 - You want a CMS where non-technical authors edit in a browser → look
-  at openhost-outline (wiki) or similar.
-- You want markdown source + a build step → look at openhost-hugo or
-  openhost-mkdocs.
+  at bottled-outline (wiki) or similar.
+- You want markdown source + a build step → look at bottled-hugo or
+  bottled-mkdocs.
 - You want server-side dynamic behaviour → wrong tool entirely; this
   serves static files only.
