@@ -1,7 +1,7 @@
 [app]
 name = "darkhttpd"
 version = "0.1.0"
-description = "darkhttpd — tiny single-binary static-file HTTP server. Drop HTML/CSS/JS/images into $OPENHOST_APP_DATA_DIR/www on the host filesystem and they are served on https://darkhttpd.<zone>/. The site is publicly viewable (no SSO); the authoring path is SSH into the OpenHost host."
+description = "darkhttpd — tiny single-binary static-file HTTP server. Drop HTML/CSS/JS/images into $OPENHOST_APP_DATA_DIR/www on the host filesystem and they are served on https://darkhttpd.<zone>/. The site is publicly viewable (no SSO); the authoring path is SSH into the Cloud in a Bottle host."
 
 [runtime.container]
 # darkhttpd binds 0.0.0.0:8080 inside the container; nothing
